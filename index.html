@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Portfolio - Professional Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Water Droplet Effects -->
+    <div class="water-droplets" id="waterDroplets"></div>
+    
+    <!-- Animated Background Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
+    <!-- Navigation Dots -->
+    <nav class="nav-dots">
+        <div class="dot active" data-section="0"></div>
+        <div class="dot" data-section="1"></div>
+        <div class="dot" data-section="2"></div>
+        <div class="dot" data-section="3"></div>
+        <div class="dot" data-section="4"></div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container" id="container">
+        <!-- Home Section -->
+        <section class="section active" id="home">
+            <div class="content">
+                <div class="hero-content-wrapper">
+                    <div class="hero-text">
+                        <h1 class="fade-in">Seidu Sulemana</h1>
+                        <p class="fade-in-delay">Creative Developer & Designer</p>
+                        <div class="cta-buttons fade-in-delay-2">
+                            <button class="btn-primary" onclick="scrollToSection(1)">Explore</button>
+                            <button class="btn-secondary" onclick="scrollToSection(4)">Contact</button>
+                        </div>
+                    </div>
+                    <div class="hero-image-container">
+                        <div class="water-overlay"></div>
+                        <div class="profile-image-wrapper">
+                            <img src="Seidu.JPG" alt="Profile" class="profile-image" id="profileImage">
+                            <div class="water-ripple"></div>
+                            <div class="water-ripple delay-1"></div>
+                            <div class="water-ripple delay-2"></div>
+                        </div>
+                        <div class="liquid-effect"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="section" id="about">
+            <div class="content">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-grid">
+                    <div class="about-image">
+                        <div class="image-placeholder">
+                            <div class="profile-glow"></div>
+                        </div>
+                    </div>
+                    <div class="about-text">
+                        <p class="lead">I'm a passionate developer with a keen eye for design and a love for creating beautiful, functional digital experiences.</p>
+                        <p>With years of experience in web development, I specialize in creating responsive, user-friendly applications that combine aesthetic appeal with technical excellence. My approach focuses on clean code, modern design principles, and user-centered solutions.</p>
+                        <div class="skills-tags">
+                            <span class="tag">Web Development</span>
+                            <span class="tag">UI/UX Design</span>
+                            <span class="tag">Frontend</span>
+                            <span class="tag">Backend</span>
+                            <span class="tag">Mobile Apps</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Qualifications Section -->
+        <section class="section" id="qualifications">
+            <div class="content">
+                <h2 class="section-title">Qualifications</h2>
+                <div class="qualifications-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Bachelor of Science in Computer Science</h3>
+                            <p class="institution">University Name</p>
+                            <p class="year">2020 - 2024</p>
+                            <p>Specialized in software engineering and web technologies. Graduated with honors.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Full Stack Web Development Certification</h3>
+                            <p class="institution">Tech Academy</p>
+                            <p class="year">2022</p>
+                            <p>Comprehensive training in modern web development stack including React, Node.js, and databases.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>UI/UX Design Specialization</h3>
+                            <p class="institution">Design Institute</p>
+                            <p class="year">2021</p>
+                            <p>Advanced training in user interface design, user experience principles, and design systems.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Professional Experience</h3>
+                            <p class="institution">Senior Developer</p>
+                            <p class="year">2023 - Present</p>
+                            <p>Leading development teams and delivering high-quality software solutions for enterprise clients.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="section" id="projects">
+            <div class="content">
+                <h2 class="section-title">Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <button class="project-btn">View Project</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>E-Commerce Platform</h3>
+                            <p>Full-stack e-commerce solution with modern UI and secure payment integration.</p>
+                            <div class="project-tags">
+                                <span>React</span>
+                                <span>Node.js</span>
+                                <span>MongoDB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <button class="project-btn">View Project</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Mobile Banking App</h3>
+                            <p>Secure mobile banking application with biometric authentication and real-time transactions.</p>
+                            <div class="project-tags">
+                                <span>React Native</span>
+                                <span>Firebase</span>
+                                <span>API</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <button class="project-btn">View Project</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Portfolio Website</h3>
+                            <p>Creative portfolio website with smooth animations and modern design principles.</p>
+                            <div class="project-tags">
+                                <span>HTML/CSS</span>
+                                <span>JavaScript</span>
+                                <span>Animation</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <button class="project-btn">View Project</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Task Management System</h3>
+                            <p>Collaborative task management platform with real-time updates and team collaboration features.</p>
+                            <div class="project-tags">
+                                <span>Vue.js</span>
+                                <span>Express</span>
+                                <span>WebSocket</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section" id="contact">
+            <div class="content">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3>Let's Connect</h3>
+                        <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div>
+                                    <h4>Email</h4>
+                                    <p>your.email@example.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">📱</div>
+                                <div>
+                                    <h4>Phone</h4>
+                                    <p>+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">📍</div>
+                                <div>
+                                    <h4>Location</h4>
+                                    <p>Your City, Country</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" class="social-link">LinkedIn</a>
+                            <a href="#" class="social-link">GitHub</a>
+                            <a href="#" class="social-link">Twitter</a>
+                            <a href="#" class="social-link">Dribbble</a>
+                        </div>
+                    </div>
+                    <form class="contact-form" action="https://formspree.io/f/mldqlyok" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Your Message" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Swipe Instruction -->
+    <div class="swipe-instruction">
+        <span class="swipe-text">Swipe up and down</span>
+        <span class="swipe-arrow">↑ ↓</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
