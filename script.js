@@ -14,8 +14,8 @@ function init() {
     setupInteractiveImage();
     setupTypewriterAnimation();
     setupSectionTitlesTypewriter();
-    setupAudioControl();
     setupLogoInteraction();
+    setupMobileMenu();
 }
 
 // Keep swipe instruction visible on all pages
@@ -406,7 +406,7 @@ function createWaterSplash(e, container) {
     }, 1000);
 }
 
-// Typewriter Animation for Hero Text , yws
+// Typewriter Animation for Hero Text
 function setupTypewriterAnimation() {
     const animatedTextElement = document.getElementById('animated-text');
     if (!animatedTextElement) return;
@@ -482,55 +482,6 @@ function setupSectionTitlesTypewriter() {
     });
 }
 
-// Background Audio Control
-function setupAudioControl() {
-    const audio = document.getElementById('background-audio');
-    const audioToggle = document.getElementById('audio-toggle');
-    const audioIcon = audioToggle.querySelector('.audio-icon');
-    
-    if (!audio || !audioToggle) return;
-    
-    let isPlaying = false;
-    
-    // Set initial volume (30% for background music)
-    audio.volume = 0.3;
-    
-    audioToggle.addEventListener('click', () => {
-        if (isPlaying) {
-            audio.pause();
-            audioIcon.textContent = '🔇';
-            isPlaying = false;
-        } else {
-            // Try to play - may require user interaction due to browser policies
-            const playPromise = audio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        audioIcon.textContent = '🔊';
-                        isPlaying = true;
-                    })
-                    .catch(error => {
-                        // Auto-play was prevented, show muted icon
-                        console.log('Audio play prevented:', error);
-                        audioIcon.textContent = '🔇';
-                    });
-            }
-        }
-    });
-    
-    // Update icon when audio ends or is paused
-    audio.addEventListener('pause', () => {
-        audioIcon.textContent = '🔇';
-        isPlaying = false;
-    });
-    
-    audio.addEventListener('play', () => {
-        audioIcon.textContent = '🔊';
-        isPlaying = true;
-    });
-}
-
 // Logo Interaction
 function setupLogoInteraction() {
     const logo = document.querySelector('.nav-logo');
@@ -559,6 +510,36 @@ function setupLogoInteraction() {
         setTimeout(() => {
             ripple.remove();
         }, 600);
+    });
+}
+
+// Mobile Menu Toggle
+function setupMobileMenu() {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    if (!menuToggle || !navMenu) return;
+    
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+    
+    // Close menu when clicking on a link
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
     });
 }
 
