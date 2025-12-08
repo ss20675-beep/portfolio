@@ -2088,7 +2088,7 @@ body {
     }
 }
 
-/* Improve scrolling on mobile */
+/* Improve scrolling on mobile , yes */
 @media (max-width: 768px) {
     body {
         -webkit-overflow-scrolling: touch;
