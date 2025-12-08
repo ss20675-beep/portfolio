@@ -406,7 +406,7 @@ function createWaterSplash(e, container) {
     }, 1000);
 }
 
-// Typewriter Animation for Hero Text
+// Typewriter Animation for Hero Text , yws
 function setupTypewriterAnimation() {
     const animatedTextElement = document.getElementById('animated-text');
     if (!animatedTextElement) return;
