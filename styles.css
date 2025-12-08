@@ -1553,6 +1553,43 @@ body {
 
 /* Small Tablets and Large Phones */
 @media (max-width: 768px) {
+    /* Enable scrolling on mobile */
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .container {
+        height: auto;
+        min-height: calc(100vh - var(--nav-height));
+        overflow: visible;
+        display: block;
+    }
+    
+    .section {
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+        opacity: 1;
+        transform: none;
+        display: block;
+        padding-top: var(--nav-height);
+    }
+    
+    .section.active,
+    .section.prev {
+        transform: none;
+    }
+    
+    .content {
+        height: auto;
+        min-height: calc(100vh - var(--nav-height));
+        overflow: visible;
+        padding: 40px 20px 100px;
+    }
+    
     .swipe-instruction {
         display: none;
     }
@@ -1783,6 +1820,10 @@ body {
         height: 40px;
         min-width: 44px;
         min-height: 44px;
+    }
+    
+    #projects .content {
+        padding-bottom: 100px;
     }
 }
 
