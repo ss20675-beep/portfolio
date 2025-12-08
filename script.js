@@ -1,7 +1,7 @@
 // Swipe Animation and Navigation
 let currentSection = 0;
 const sections = document.querySelectorAll('.section');
-const dots = document.querySelectorAll('.dot');
+const navLinks = document.querySelectorAll('.nav-link');
 const totalSections = sections.length;
 
 // Initialize
@@ -12,6 +12,10 @@ function init() {
     setupEventListeners();
     hideSwipeInstruction();
     setupInteractiveImage();
+    setupTypewriterAnimation();
+    setupSectionTitlesTypewriter();
+    setupAudioControl();
+    setupLogoInteraction();
 }
 
 // Keep swipe instruction visible on all pages
@@ -54,14 +58,15 @@ function showSection(index) {
         // Add active class to current section
         sections[index].classList.add('active');
         
-        // Update navigation dots
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
+        // Update navigation links
+        navLinks.forEach((link, i) => {
+            link.classList.toggle('active', i === index);
         });
         
         currentSection = index;
     });
 }
+
 
 // Navigate to section
 function scrollToSection(index) {
@@ -137,14 +142,14 @@ function setupEventListeners() {
         }
     });
 
-    // Keyboard navigation
+    // Keyboard navigation - left and right arrows only
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        if (e.key === 'ArrowRight') {
             e.preventDefault();
             if (currentSection < totalSections - 1) {
                 scrollToSection(currentSection + 1);
             }
-        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        } else if (e.key === 'ArrowLeft') {
             e.preventDefault();
             if (currentSection > 0) {
                 scrollToSection(currentSection - 1);
@@ -152,70 +157,53 @@ function setupEventListeners() {
         }
     });
 
-    // Navigation dots
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
+    // Navigation links (already have onclick handlers in HTML, but adding for consistency)
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
             scrollToSection(index);
         });
     });
 
-    // Wheel event for smooth scrolling - immediate response
+    // Wheel event for horizontal scrolling - immediate response
     let wheelTimeout;
     let lastWheelTime = 0;
     document.addEventListener('wheel', (e) => {
         const now = Date.now();
         if (now - lastWheelTime > 300) {
             lastWheelTime = now;
-            if (e.deltaY > 30 && currentSection < totalSections - 1) {
+            // Use deltaX for horizontal scrolling
+            if (e.deltaX > 30 && currentSection < totalSections - 1) {
                 scrollToSection(currentSection + 1);
-            } else if (e.deltaY < -30 && currentSection > 0) {
+            } else if (e.deltaX < -30 && currentSection > 0) {
                 scrollToSection(currentSection - 1);
             }
         }
     }, { passive: true });
 }
 
-// Handle swipe gesture with momentum
+// Handle swipe gesture with momentum - horizontal only
 function handleSwipe() {
     const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
     const swipeTime = Date.now() - swipeStartTime;
     const minSwipeDistance = 30; // Reduced for more responsive feel
     const minSwipeVelocity = 0.2; // pixels per millisecond (reduced for better sensitivity)
 
-    // Calculate velocity
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    // Calculate velocity for horizontal swipe only
+    const distance = Math.abs(deltaX);
     const velocity = swipeTime > 0 ? distance / swipeTime : 0;
 
-    // Determine if horizontal or vertical swipe
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // Horizontal swipe
-        if (Math.abs(deltaX) > minSwipeDistance || velocity > minSwipeVelocity) {
-            if (deltaX > 0) {
-                // Swipe right to left (finger moves right) - go to previous section
-                if (currentSection > 0) {
-                    scrollToSection(currentSection - 1);
-                }
-            } else if (deltaX < 0) {
-                // Swipe left to right (finger moves left) - go to next section
-                if (currentSection < totalSections - 1) {
-                    scrollToSection(currentSection + 1);
-                }
+    // Only handle horizontal swipes
+    if (Math.abs(deltaX) > minSwipeDistance || velocity > minSwipeVelocity) {
+        if (deltaX > 0) {
+            // Swipe right (finger moves right) - go to previous section
+            if (currentSection > 0) {
+                scrollToSection(currentSection - 1);
             }
-        }
-    } else {
-        // Vertical swipe
-        if (Math.abs(deltaY) > minSwipeDistance || velocity > minSwipeVelocity) {
-            if (deltaY > 0) {
-                // Swipe down - go to previous section
-                if (currentSection > 0) {
-                    scrollToSection(currentSection - 1);
-                }
-            } else if (deltaY < 0) {
-                // Swipe up - go to next section
-                if (currentSection < totalSections - 1) {
-                    scrollToSection(currentSection + 1);
-                }
+        } else if (deltaX < 0) {
+            // Swipe left (finger moves left) - go to next section
+            if (currentSection < totalSections - 1) {
+                scrollToSection(currentSection + 1);
             }
         }
     }
@@ -354,48 +342,48 @@ document.addEventListener('DOMContentLoaded', () => {
 // Smooth scroll to section function (for buttons)
 window.scrollToSection = scrollToSection;
 
-// Interactive Profile Image with Water Effects
+// Interactive Profile Image with Water Effects (supports multiple images)
 function setupInteractiveImage() {
-    const imageContainer = document.querySelector('.hero-image-container');
-    const liquidEffect = document.querySelector('.liquid-effect');
-    const profileImage = document.getElementById('profileImage');
-    
-    if (!imageContainer || !liquidEffect) return;
-    
-    // Mouse move tracking for liquid effect
-    imageContainer.addEventListener('mousemove', (e) => {
-        const rect = imageContainer.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const containers = document.querySelectorAll('.interactive-image');
+    containers.forEach((imageContainer) => {
+        const liquidEffect = imageContainer.querySelector('.liquid-effect');
+        if (!liquidEffect) return;
         
-        liquidEffect.style.setProperty('--mouse-x', `${x}%`);
-        liquidEffect.style.setProperty('--mouse-y', `${y}%`);
-        liquidEffect.style.opacity = '1';
-    });
-    
-    imageContainer.addEventListener('mouseleave', () => {
-        liquidEffect.style.opacity = '0';
-    });
-    
-    // Touch support for mobile
-    imageContainer.addEventListener('touchmove', (e) => {
-        const rect = imageContainer.getBoundingClientRect();
-        const touch = e.touches[0];
-        const x = ((touch.clientX - rect.left) / rect.width) * 100;
-        const y = ((touch.clientY - rect.top) / rect.height) * 100;
+        const updateEffect = (x, y) => {
+            liquidEffect.style.setProperty('--mouse-x', `${x}%`);
+            liquidEffect.style.setProperty('--mouse-y', `${y}%`);
+            liquidEffect.style.opacity = '1';
+        };
         
-        liquidEffect.style.setProperty('--mouse-x', `${x}%`);
-        liquidEffect.style.setProperty('--mouse-y', `${y}%`);
-        liquidEffect.style.opacity = '1';
-    }, { passive: true });
-    
-    imageContainer.addEventListener('touchend', () => {
-        liquidEffect.style.opacity = '0';
-    });
-    
-    // Click effect - create water splash
-    imageContainer.addEventListener('click', (e) => {
-        createWaterSplash(e, imageContainer);
+        // Mouse move tracking for liquid effect
+        imageContainer.addEventListener('mousemove', (e) => {
+            const rect = imageContainer.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            updateEffect(x, y);
+        });
+        
+        imageContainer.addEventListener('mouseleave', () => {
+            liquidEffect.style.opacity = '0';
+        });
+        
+        // Touch support for mobile
+        imageContainer.addEventListener('touchmove', (e) => {
+            const rect = imageContainer.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = ((touch.clientX - rect.left) / rect.width) * 100;
+            const y = ((touch.clientY - rect.top) / rect.height) * 100;
+            updateEffect(x, y);
+        }, { passive: true });
+        
+        imageContainer.addEventListener('touchend', () => {
+            liquidEffect.style.opacity = '0';
+        });
+        
+        // Click effect - create water splash
+        imageContainer.addEventListener('click', (e) => {
+            createWaterSplash(e, imageContainer);
+        });
     });
 }
 
@@ -416,5 +404,161 @@ function createWaterSplash(e, container) {
     setTimeout(() => {
         splash.remove();
     }, 1000);
+}
+
+// Typewriter Animation for Hero Text
+function setupTypewriterAnimation() {
+    const animatedTextElement = document.getElementById('animated-text');
+    if (!animatedTextElement) return;
+    
+    const fullText = "I am a creative Developer & Designer";
+    let currentIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100; // milliseconds per character
+    let deletingSpeed = 50; // faster when deleting
+    let pauseTime = 2000; // pause before deleting
+    
+    function typeWriter() {
+        if (!isDeleting && currentIndex < fullText.length) {
+            // Typing forward
+            animatedTextElement.textContent = fullText.substring(0, currentIndex + 1);
+            currentIndex++;
+            setTimeout(typeWriter, typingSpeed);
+        } else if (!isDeleting && currentIndex === fullText.length) {
+            // Finished typing, pause then start deleting
+            setTimeout(() => {
+                isDeleting = true;
+                typeWriter();
+            }, pauseTime);
+        } else if (isDeleting && currentIndex > 0) {
+            // Deleting backward
+            currentIndex--;
+            animatedTextElement.textContent = fullText.substring(0, currentIndex);
+            setTimeout(typeWriter, deletingSpeed);
+        } else if (isDeleting && currentIndex === 0) {
+            // Finished deleting, start typing again
+            isDeleting = false;
+            setTimeout(typeWriter, 500); // Small pause before restarting
+        }
+    }
+    
+    // Start the animation
+    typeWriter();
+}
+
+// Typewriter animation for all section titles
+function setupSectionTitlesTypewriter() {
+    const titles = document.querySelectorAll('.section-title');
+    titles.forEach((title) => {
+        const fullText = title.textContent.trim();
+        let currentIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 80;
+        const deletingSpeed = 50;
+        const pauseTime = 1200;
+        
+        const typeLoop = () => {
+            if (!isDeleting && currentIndex <= fullText.length) {
+                title.textContent = fullText.substring(0, currentIndex);
+                currentIndex++;
+                setTimeout(typeLoop, typingSpeed);
+            } else if (!isDeleting && currentIndex > fullText.length) {
+                setTimeout(() => {
+                    isDeleting = true;
+                    typeLoop();
+                }, pauseTime);
+            } else if (isDeleting && currentIndex >= 0) {
+                title.textContent = fullText.substring(0, currentIndex);
+                currentIndex--;
+                setTimeout(typeLoop, deletingSpeed);
+            } else if (isDeleting && currentIndex < 0) {
+                isDeleting = false;
+                currentIndex = 0;
+                setTimeout(typeLoop, 400);
+            }
+        };
+        
+        typeLoop();
+    });
+}
+
+// Background Audio Control
+function setupAudioControl() {
+    const audio = document.getElementById('background-audio');
+    const audioToggle = document.getElementById('audio-toggle');
+    const audioIcon = audioToggle.querySelector('.audio-icon');
+    
+    if (!audio || !audioToggle) return;
+    
+    let isPlaying = false;
+    
+    // Set initial volume (30% for background music)
+    audio.volume = 0.3;
+    
+    audioToggle.addEventListener('click', () => {
+        if (isPlaying) {
+            audio.pause();
+            audioIcon.textContent = '🔇';
+            isPlaying = false;
+        } else {
+            // Try to play - may require user interaction due to browser policies
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        audioIcon.textContent = '🔊';
+                        isPlaying = true;
+                    })
+                    .catch(error => {
+                        // Auto-play was prevented, show muted icon
+                        console.log('Audio play prevented:', error);
+                        audioIcon.textContent = '🔇';
+                    });
+            }
+        }
+    });
+    
+    // Update icon when audio ends or is paused
+    audio.addEventListener('pause', () => {
+        audioIcon.textContent = '🔇';
+        isPlaying = false;
+    });
+    
+    audio.addEventListener('play', () => {
+        audioIcon.textContent = '🔊';
+        isPlaying = true;
+    });
+}
+
+// Logo Interaction
+function setupLogoInteraction() {
+    const logo = document.querySelector('.nav-logo');
+    if (!logo) return;
+    
+    // Make logo clickable - scroll to home
+    logo.addEventListener('click', () => {
+        scrollToSection(0);
+    });
+    
+    // Add ripple effect on click
+    logo.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('logo-ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    });
 }
 
